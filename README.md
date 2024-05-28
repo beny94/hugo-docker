@@ -10,14 +10,13 @@ Make sure you're running complete (with dot in end of command). The default user
     id -g
 Now if all complete you can run in your directory where docker-compose.yml is located
 
-docker run --rm -it \
-    -u hugo \
-    -p 1313:1313 \
-    -v "${PWD}/hugo:/home/hugo" \
-    -e USERID=${USERID:-530800011} \
-    -e GROUPID=${GROUPID:-530800011} \
-    --name hugo \
-    hugo:debiantrixie \
-    bash
-
-Now voilaa, you can use hugo server to make your telkomsel site clone, ups i mean your page hehehe
+    docker run --rm -it \
+        -u hugo \
+        -p 1313:1313 \
+        -v "${PWD}/hugo:/home/hugo" \
+        -e USERID=${USERID:-530800011} \
+        -e GROUPID=${GROUPID:-530800011} \
+        --name hugo \
+        hugo:debiantrixie \
+        bash
+Now voilaa, you can use hugo server to make your ~~telkomsel site clone~~, ups i mean your page hehehe
