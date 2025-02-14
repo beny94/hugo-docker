@@ -1,0 +1,15 @@
+services:
+  hugo:
+    build:
+        context: .
+        dockerfile: Dockerfile.alpine
+        args:
+          USER_UID: ${MY_UID} # export MY_UID=$(id -u)
+          USER_GID: ${MY_GID} # export MY_GID=$(id -g)
+    image: hugo:alpine
+    ports:
+      - "1313:1313"
+    volumes:
+      - "${PWD}:/hugo"
+    user: "${MY_UID}:${MY_GID}"
+    command: ["hugo", "--watch", "--bind=0.0.0.0"]

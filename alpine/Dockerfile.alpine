@@ -1,0 +1,24 @@
+FROM alpine:latest
+
+# Install necessary packages (including 'shadow' for user management)
+apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community hugo neovim vim bash shadow git curl wget
+
+# Create the user with the same UID and GID as your host user
+ARG USER_UID=1001
+ARG USER_GID=1001
+RUN addgroup -g $USER_GID hugo && \
+    adduser -u $USER_UID -G hugo -D hugo
+
+COPY docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Switch to the non-root user
+USER hugo
+
+# Set the working directory
+WORKDIR /hugo
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Command to run when the container starts
+CMD ["hugo", "--watch", "--bind=0.0.0.0"] # Or your preferred Hugo command
