@@ -10,6 +10,6 @@ services:
     ports:
       - "1313:1313"
     volumes:
-      - "${PWD}:/hugo"
+      - "${PWD}/hugo:/hugo"
     user: "${MY_UID}:${MY_GID}"
-    command: ["hugo", "--watch", "--bind=0.0.0.0"]
+    command: ["hugo", "server", "--bind=0.0.0.0"]

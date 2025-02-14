@@ -1,13 +1,18 @@
 FROM alpine:latest
 
 # Install necessary packages (including 'shadow' for user management)
-apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community hugo neovim vim bash shadow git curl wget
+RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community hugo neovim vim bash shadow git curl wget
 
-# Create the user with the same UID and GID as your host user
-ARG USER_UID=1001
-ARG USER_GID=1001
-RUN addgroup -g $USER_GID hugo && \
-    adduser -u $USER_UID -G hugo -D hugo
+# Create the group if it doesn't exist
+ARG USER_GID=530800011 # Or your GID, but preferably let the system assign
+RUN addgroup -g $USER_GID hugo || true # The || true handles the case when group exists
+
+# Create the user with the large UID
+ARG USER_UID=530800011 # Your large UID
+RUN useradd -u $USER_UID hugo # useradd is used instead of adduser
+
+# Add user to the group
+RUN usermod -aG hugo hugo
 
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
